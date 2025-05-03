@@ -33,10 +33,17 @@ public class SecurityConfig {
                         .requestMatchers("/login/**", "/signup/**", "/oauth2/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .cors(Customizer.withDefaults()) // uses the bean below
+                .cors(Customizer.withDefaults())
                 .oauth2Login(oauth -> oauth
                         .defaultSuccessUrl("http://localhost:5173/home", true)
                         .userInfoEndpoint(user -> user.userService(oauth2UserService()))
+                )
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("http://localhost:5173/login")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
                 );
 
         return http.build();
@@ -62,22 +69,25 @@ public class SecurityConfig {
             return new DefaultOAuth2User(
                     oAuth2User.getAuthorities(),
                     oAuth2User.getAttributes(),
-                    "sub"
+                    "email"
             );
         };
     }
 
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(List.of("*"));
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+            configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+            configuration.setAllowCredentials(true);
+
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", configuration);
+            return source;
+        }
+
+
 }

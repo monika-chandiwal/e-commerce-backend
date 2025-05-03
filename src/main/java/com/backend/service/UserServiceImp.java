@@ -30,6 +30,18 @@ public class UserServiceImp implements UsersService{
      */
     @Override
     public Users checkUser(Users users) {
+        Users existingUser = usersRepo.findByEmail(users.getEmail());
+        System.out.println(
+                "  comes "
+        );
+        if (existingUser != null && existingUser.getPassword().equals(users.getPassword())) {
+            return existingUser;
+        }
         return null;
+    }
+
+    @Override
+    public void deleteAllUsers() {
+        usersRepo.deleteAll();
     }
 }
