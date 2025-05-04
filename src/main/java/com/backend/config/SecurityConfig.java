@@ -58,7 +58,8 @@ public class SecurityConfig {
             OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
             String email = oAuth2User.getAttribute("email");
             String name = oAuth2User.getAttribute("name");
-
+            String picture = oAuth2User.getAttribute("picture");
+            String locale = oAuth2User.getAttribute("locale");
             // Check if user exists, else save to DB
             Users user = usersRepo.findByEmail(email);
             if (user == null) {

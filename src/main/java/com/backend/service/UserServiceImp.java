@@ -31,9 +31,7 @@ public class UserServiceImp implements UsersService{
     @Override
     public Users checkUser(Users users) {
         Users existingUser = usersRepo.findByEmail(users.getEmail());
-        System.out.println(
-                "  comes "
-        );
+        System.out.println( existingUser );
         if (existingUser != null && existingUser.getPassword().equals(users.getPassword())) {
             return existingUser;
         }

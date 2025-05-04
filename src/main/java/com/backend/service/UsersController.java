@@ -8,7 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,26 +58,36 @@ public class UsersController {
 
     // Get the currently authenticated user (for OAuth2)
     @GetMapping("/current-user")
-    public ResponseEntity<?> getCurrentUser(OAuth2AuthenticationToken auth) {
+    public ResponseEntity<?> getCurrentUser() {
         try {
-            if (auth == null) {
+            var auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if (auth == null || !auth.isAuthenticated()) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
             }
 
-            Map<String, Object> attributes = auth.getPrincipal().getAttributes();
-            String email = (String) attributes.get("email");
-            System.out.println(email);
-            Users user = usersRepo.findByEmail(email);
-            if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found in database");
+            if (!(auth.getPrincipal() instanceof OAuth2User oAuth2User)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not an OAuth2 user");
             }
 
-            return ResponseEntity.ok(user); // Successfully returned user
+            Map<String, Object> attributes = oAuth2User.getAttributes();
+
+            // Use HashMap to allow null values
+            Map<String, Object> userData = new java.util.HashMap<>();
+            userData.put("name", attributes.get("name"));
+            userData.put("email", attributes.get("email"));
+            userData.put("picture", attributes.get("picture"));
+            userData.put("locale", attributes.get("locale"));
+
+            return ResponseEntity.ok(userData);
+
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching user information");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching user info");
         }
     }
+
+
 
     // OAuth2 login success, redirect to frontend
     @GetMapping("/oauth2/success")
