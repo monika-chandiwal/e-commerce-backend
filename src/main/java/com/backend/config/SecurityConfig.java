@@ -1,6 +1,7 @@
 package com.backend.config;
 import com.backend.model.Users;
 import com.backend.repository.UsersRepo;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,11 +30,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login/**", "/signup/**", "/oauth2/**").permitAll()
                         .anyRequest().authenticated()
 
                 )
+                .cors(Customizer.withDefaults())
 
                 .oauth2Login(oauth -> oauth
                         .defaultSuccessUrl("http://localhost:5173/home", true)
@@ -41,14 +45,13 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("http://localhost:5173/login")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        })
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
                 );
-        System.out.println(
-                "logout "
-        );
 
         return http.build();
     }

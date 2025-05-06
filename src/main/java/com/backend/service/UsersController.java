@@ -112,14 +112,16 @@ public class UsersController {
         }
     }
     @GetMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> logout(HttpServletRequest request) {
         try {
-            request.logout(); // Invalidate session
-            System.out.println(" logout ");
-            return ResponseEntity.ok("Logged out");
+            request.logout();
+            request.getSession().invalidate();
+            return ResponseEntity.ok("Logged out successfully");
         } catch (ServletException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Logout failed");
         }
     }
+
+
 
 }
