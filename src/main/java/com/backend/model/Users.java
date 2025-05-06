@@ -2,6 +2,8 @@ package com.backend.model;
 
 import jakarta.persistence.*;
 
+import java.sql.Blob;
+
 @Entity
 public class Users {
     @Id
@@ -12,6 +14,7 @@ public class Users {
     private String username;
     @Column(unique = true)
     private String password;
+    private Blob profilePic;
 
     public int getId() {
         return id;
@@ -67,5 +70,13 @@ public class Users {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public Blob getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(Blob profilePic) {
+        this.profilePic = profilePic;
     }
 }

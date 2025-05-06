@@ -111,10 +111,11 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting users");
         }
     }
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.logout(); // Invalidate session
+            System.out.println(" logout ");
             return ResponseEntity.ok("Logged out");
         } catch (ServletException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Logout failed");
