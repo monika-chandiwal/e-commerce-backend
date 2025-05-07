@@ -34,13 +34,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login/**", "/signup/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/current-user").authenticated()
                         .anyRequest().authenticated()
-
                 )
+
                 .cors(Customizer.withDefaults())
 
                 .oauth2Login(oauth -> oauth
-                        .defaultSuccessUrl("http://localhost:5173/home", true)
+
+                        .defaultSuccessUrl("http://localhost:5173/oauth2/redirect", true)
+
                         .userInfoEndpoint(user -> user.userService(oauth2UserService()))
                 )
                 .logout(logout -> logout

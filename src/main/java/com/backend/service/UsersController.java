@@ -5,6 +5,9 @@ import com.backend.repository.UsersRepo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.HashMap;
 
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
@@ -42,7 +46,7 @@ public class UsersController {
 
     // Login with credentials
     @PostMapping("/login")
-    public ResponseEntity<?> checkUser(@RequestBody Users user) {
+    public ResponseEntity<?> checkUser(@RequestBody Users user, HttpSession session) {
         System.out.println("Login attempt for: " + user.getEmail());
 
         Users authenticatedUser = usersService.checkUser(user);
@@ -51,10 +55,13 @@ public class UsersController {
         if (authenticatedUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-
+        session.setAttribute("username", user.getUsername());
         return ResponseEntity.ok(authenticatedUser);
     }
 
+
+    // Get the currently authenticated user (for OAuth2)
+    private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
     // Get the currently authenticated user (for OAuth2)
     @GetMapping("/current-user")
@@ -71,18 +78,21 @@ public class UsersController {
             }
 
             Map<String, Object> attributes = oAuth2User.getAttributes();
+            logger.info("Authenticated user: {}", attributes);
 
             // Use HashMap to allow null values
-            Map<String, Object> userData = new java.util.HashMap<>();
+            Map<String, Object> userData = new HashMap<>();
             userData.put("name", attributes.get("name"));
             userData.put("email", attributes.get("email"));
             userData.put("picture", attributes.get("picture"));
             userData.put("locale", attributes.get("locale"));
 
+            logger.info("User data: {}", userData);
+
             return ResponseEntity.ok(userData);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error fetching user info: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching user info");
         }
     }

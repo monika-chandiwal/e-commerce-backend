@@ -14,7 +14,16 @@ public class Users {
     private String username;
     @Column(unique = true)
     private String password;
+
+    public Users( String email, String username, String password, boolean toFactorAuthentication) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.toFactorAuthentication = toFactorAuthentication;
+    }
+
     private Blob profilePic;
+    private boolean toFactorAuthentication;
 
     public int getId() {
         return id;
@@ -78,5 +87,13 @@ public class Users {
 
     public void setProfilePic(Blob profilePic) {
         this.profilePic = profilePic;
+    }
+
+    public boolean isToFactorAuthentication() {
+        return toFactorAuthentication;
+    }
+
+    public void setToFactorAuthentication(boolean toFactorAuthentication) {
+        this.toFactorAuthentication = toFactorAuthentication;
     }
 }
