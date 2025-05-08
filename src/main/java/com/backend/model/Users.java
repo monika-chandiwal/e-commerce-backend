@@ -9,7 +9,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  int id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
     private String username;
     @Column(unique = true)

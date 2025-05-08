@@ -3,6 +3,7 @@ package com.backend.service;
 import com.backend.model.Users;
 import com.backend.repository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -14,10 +15,18 @@ public class UserServiceImp implements UsersService{
 
     @Override
     public Users saveUser(Users user) {
-        System.out.println("Received user: " + user);
+        try {
 
-        return usersRepo.save(user);
+            System.out.println("Received user: " + user);
+            return usersRepo.save(user);
+        } catch (DataIntegrityViolationException e) {
+            // Handle the duplicate entry (unique constraint violation)
+            throw new RuntimeException("Email already exists: " + user.getEmail());
+        }
     }
+
+
+
 
     @Override
     public List<Users> getAllUsers() {
@@ -42,4 +51,10 @@ public class UserServiceImp implements UsersService{
     public void deleteAllUsers() {
         usersRepo.deleteAll();
     }
+
+    @Override
+    public boolean userExist(Users users) {
+        return usersRepo.findByEmail(users.getEmail()) != null;
+    }
+
 }

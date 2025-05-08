@@ -33,16 +33,23 @@ public class UsersController {
 
     // Sign-up new user
     @PostMapping("/signup")
-    public ResponseEntity<Users> createUser(@RequestBody Users users) {
+    public ResponseEntity<?> createUser(@RequestBody Users users) {
         try {
-            Users newUser = usersService.saveUser(users);
-            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+            if (usersService.userExist(users)) {
+                return ResponseEntity.status(HttpStatus.CONFLICT) // 409
+                        .body("User already exists with email "+ users.getEmail());
+            } else {
+                Users newUser = usersService.saveUser(users);
+                return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+            }
         } catch (Exception e) {
-            // Log error and return internal server error if there's an issue
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred");
         }
     }
+
+
 
     // Login with credentials
     @PostMapping("/login")
