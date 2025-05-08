@@ -12,8 +12,9 @@ public class Users {
     @Column(unique = true, nullable = false)
     private String email;
     private String username;
-    @Column(unique = true)
-    private String password;
+        private String password;
+    @Lob
+    private Blob profilePic;
 
     public Users( String email, String username, String password, boolean toFactorAuthentication) {
         this.email = email;
@@ -22,7 +23,7 @@ public class Users {
         this.toFactorAuthentication = toFactorAuthentication;
     }
 
-    private Blob profilePic;
+
     private boolean toFactorAuthentication;
 
     public int getId() {
