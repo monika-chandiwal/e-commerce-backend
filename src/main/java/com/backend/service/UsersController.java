@@ -35,7 +35,7 @@ public class UsersController {
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(@RequestBody Users users) {
         try {
-            if (usersService.userExist(users)) {
+            if (usersRepo.findByEmail(users.getEmail())!=null) {
                 return ResponseEntity.status(HttpStatus.CONFLICT) // 409
                         .body("User already exists with email "+ users.getEmail());
             } else {
