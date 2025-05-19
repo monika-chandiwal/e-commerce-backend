@@ -1,7 +1,7 @@
-package com.backend.service;
+package com.backend.customer.service;
 
-import com.backend.model.ContactUs;
-import com.backend.repository.ContactRepo;
+import com.backend.customer.model.ContactUs;
+import com.backend.customer.repository.ContactRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

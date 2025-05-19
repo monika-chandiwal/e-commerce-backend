@@ -1,4 +1,4 @@
-package com.backend.model;
+package com.backend.customer.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,6 +1,6 @@
-package com.backend.config;
-import com.backend.model.Users;
-import com.backend.repository.UsersRepo;
+package com.backend.customer.config;
+import com.backend.customer.model.Users;
+import com.backend.customer.repository.UsersRepo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

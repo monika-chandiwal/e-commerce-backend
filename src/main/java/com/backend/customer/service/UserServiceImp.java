@@ -1,11 +1,10 @@
-package com.backend.service;
+package com.backend.customer.service;
 
-import com.backend.model.Users;
-import com.backend.repository.UsersRepo;
+import com.backend.customer.model.Users;
+import com.backend.customer.repository.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 @Service

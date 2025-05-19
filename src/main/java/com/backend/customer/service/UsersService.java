@@ -1,7 +1,6 @@
-package com.backend.service;
+package com.backend.customer.service;
 
-import com.backend.model.Users;
-import org.springframework.stereotype.Service;
+import com.backend.customer.model.Users;
 
 import java.util.List;
 
