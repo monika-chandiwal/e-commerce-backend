@@ -1,12 +1,8 @@
 package com.backend.vender.service;
 
-public class SmsServiceImp implements SmsService{
-    /**
-     * @param phoneNumber
-     * @param otp
-     */
-    @Override
-    public void sendOtp(String phoneNumber, String otp) {
+import org.springframework.stereotype.Service;
 
-    }
+@Service
+public class SmsServiceImp implements SmsService{
+
 }
