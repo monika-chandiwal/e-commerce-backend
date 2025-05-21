@@ -1,4 +1,4 @@
-package com.backend.vender.service;
+package com.backend.vendor.service;
 
 import org.springframework.stereotype.Service;
 

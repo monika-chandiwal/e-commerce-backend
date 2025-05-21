@@ -1,4 +1,4 @@
-package com.backend.vender.config;
+package com.backend.vendor.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ public class VendorSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/vendor/public/**", "/vendor/verifyOtp", "/vendor/otpRequest").permitAll()
+                        .requestMatchers("/vendor/public/**", "/vendor/verifyOtp", "/vendor/otpRequest","/vendor/signup","/vendor/login","/vendor/logout","/vendor/addProduct").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(AbstractHttpConfigurer::disable)  // <-- DISABLE OAUTH2 LOGIN HERE

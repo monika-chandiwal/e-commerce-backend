@@ -1,4 +1,4 @@
-package com.backend.vender.service;
+package com.backend.vendor.service;
 import com.twilio.Twilio;
 import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
@@ -29,7 +29,7 @@ public class OtpServiceImp implements OtpService {
     }
 
     @Override
-    public void sendOtp(String phoneNumber,String otp) {
+    public void sendOtp(String phoneNumber) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Verification verification = Verification.creator(
                         SERVICE_SID,

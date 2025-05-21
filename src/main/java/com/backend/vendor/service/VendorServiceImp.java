@@ -1,7 +1,7 @@
-package com.backend.vender.service;
+package com.backend.vendor.service;
 
-import com.backend.vender.model.Vender;
-import com.backend.vender.repository.VendorRepo;
+import com.backend.vendor.model.Vendor;
+import com.backend.vendor.repository.VendorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,33 +12,35 @@ public class VendorServiceImp implements VendorService{
     @Autowired
     private VendorRepo vendorRepo;
     @Override
-    public Vender saveVendor(Vender vender) {
-        return null;
+    public Vendor saveVendor(Vendor vendor) {
+
+        return vendorRepo.save(vendor);
+
     }
 
     /**
      * @return
      */
     @Override
-    public List<Vender> getAllVenders() {
+    public List<Vendor> getAllVendors() {
         return List.of();
     }
 
     /**
-     * @param vender
+     * @param vendor
      * @return
      */
     @Override
-    public Vender checkVender(Vender vender) {
+    public Vendor checkVendor(Vendor vendor) {
         return null;
     }
 
     @Override
-    public void deleteAllVender() {
+    public void deleteAllVendor() {
 
     }
     @Override
-    public boolean venderExist(Vender vender) {
+    public boolean vendorExist(Vendor vendor) {
         return false;
     }
 }
