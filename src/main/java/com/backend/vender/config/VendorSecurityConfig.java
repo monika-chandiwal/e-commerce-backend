@@ -11,20 +11,21 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+@Order(1)
 @Configuration
 @EnableWebSecurity
-@Order(1)  // <-- keep this
 public class VendorSecurityConfig {
     @Bean
     public SecurityFilterChain vendorFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http
-                .securityMatcher(new AntPathRequestMatcher("/vendor/**"))
+                .securityMatcher("/vendor/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/vendor/public/**").permitAll()
-                        .requestMatchers("/vendor/**").authenticated()
+                        .requestMatchers("/vendor/public/**", "/vendor/verifyOtp", "/vendor/otpRequest").permitAll()
+                        .anyRequest().authenticated()
                 )
+                .oauth2Login(AbstractHttpConfigurer::disable)  // <-- DISABLE OAUTH2 LOGIN HERE
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/vendor/logout"))
                         .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))

@@ -21,13 +21,15 @@ public class OtpServiceImp implements OtpService {
 
     @Override
     public String generateOtp(String phoneNumber) {
-        System.out.println("generate otp");
+
         Random random = new Random();
-        return String.format("%06d", random.nextInt(1000000));
+        String Otp=String.format("%06d", random.nextInt(1000000));
+        System.out.println("generate otp : "+Otp);
+        return Otp;
     }
 
     @Override
-    public void sendOtp(String phoneNumber) {
+    public void sendOtp(String phoneNumber,String otp) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Verification verification = Verification.creator(
                         SERVICE_SID,
@@ -41,11 +43,16 @@ public class OtpServiceImp implements OtpService {
     @Override
     public boolean verifyOtp(String phoneNumber, String code) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        VerificationCheck verificationCheck = VerificationCheck.creator(SERVICE_SID)
-                .setTo("+91" + phoneNumber)
-                .setCode(code)
-                .create();
+        try {
+            VerificationCheck verificationCheck = VerificationCheck.creator(SERVICE_SID)
+                    .setTo("+91" + phoneNumber)
+                    .setCode(code)
+                    .create();
 
-        return "approved".equals(verificationCheck.getStatus());
+            return "approved".equals(verificationCheck.getStatus());
+        } catch (Exception e) {
+            System.err.println("OTP Verification failed: " + e.getMessage());
+            return false;
+        }
     }
 }
