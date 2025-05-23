@@ -25,4 +25,21 @@ public class ProductServiceImp implements ProductService{
     public List<Products> getAll(int id) {
         return List.of();
     }
+
+    /**
+     * @param productId
+     * @return
+     */
+    @Override
+    public void deleteProduct(int productId) {
+        productRepo.deleteById(productId);
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void deleteAllProduct() {
+           productRepo.deleteAll();
+    }
 }

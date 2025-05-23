@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/vendor")
@@ -33,4 +36,32 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/dashboard/{id}")
+    public ResponseEntity<?> getProducts(@PathVariable Integer id) {
+        List<Products> products = productRepo.findByVendorId(id);
+        System.out.println(products);
+        return products.isEmpty()
+                ? ResponseEntity.status(HttpStatus.NOT_FOUND).body("No products found")
+                : ResponseEntity.ok(products);
+    }
+
+    @DeleteMapping("/dashboard/deleteProduct/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
+        try {
+            productService.deleteProduct(productId);
+            return ResponseEntity.ok().body(" product Successfully deleted");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @DeleteMapping("/dashboard/deleteAllProduct")
+    public ResponseEntity<?> deleteAllProduct(){
+        try {
+            productService.deleteAllProduct();
+            return ResponseEntity.ok().body(" products Successfully deleted");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
