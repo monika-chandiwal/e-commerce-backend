@@ -66,4 +66,15 @@ public class ProductController {
             throw new RuntimeException(e);
         }
     }
+
+    @PutMapping("/dashboard/productUpdate/{productId}")
+    public ResponseEntity<?> updateProduct(@RequestBody Products products, @PathVariable ("productId")  int productId){
+        try {
+            productService.updateProduct(productId, products);
+            return ResponseEntity.ok().body(products);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

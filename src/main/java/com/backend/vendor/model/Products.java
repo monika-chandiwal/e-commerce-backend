@@ -126,6 +126,17 @@ public class Products {
         this.vendor = vendor;
     }
 
+    public Products(String name, String description, Double price, Integer quantity, String sizes, String type, String imageUrl, String brand) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.sizes = String.join(",", sizes);
+        this.type = type;
+        this.imageUrl = imageUrl;
+        this.brand = brand;
+    }
+
     public String getBrand() {
         return brand;
     }

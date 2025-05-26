@@ -42,4 +42,29 @@ public class ProductServiceImp implements ProductService{
     public void deleteAllProduct() {
            productRepo.deleteAll();
     }
+
+    /**
+     * @param id
+     * @param 
+     * @return
+     */
+
+        @Override
+        public void updateProduct(int id, Products newProductData) {
+            Products existingProduct = productRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
+
+            existingProduct.setName(newProductData.getName());
+            existingProduct.setDescription(newProductData.getDescription());
+            existingProduct.setPrice(newProductData.getPrice());
+            existingProduct.setQuantity(newProductData.getQuantity());
+            existingProduct.setType(newProductData.getType());
+            existingProduct.setBrand(newProductData.getBrand());
+            existingProduct.setImageUrl(newProductData.getImageUrl());
+            existingProduct.setSizes(newProductData.getSizes());
+
+            productRepo.save(existingProduct);
+        }
+
+
 }

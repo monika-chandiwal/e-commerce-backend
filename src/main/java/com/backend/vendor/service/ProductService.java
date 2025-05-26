@@ -9,4 +9,5 @@ public interface ProductService {
     public List<Products> getAll(int id);
     public void deleteProduct(int productId);
     public void deleteAllProduct();
+    public void updateProduct(int id,Products products);
 }
