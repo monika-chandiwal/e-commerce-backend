@@ -3,19 +3,23 @@ package com.backend.vendor.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Entity
 public class Products {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
     private String description;
     private Double price;
     private Integer quantity;
-    private  String size;
+    private String sizes;
     private String type;
     private String imageUrl;
+    private  String brand;
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
@@ -62,14 +66,14 @@ public class Products {
         this.quantity = quantity;
     }
 
-    public String getSize() {
-        return size;
+    public List<String> getSizes() {
+        if (sizes == null || sizes.isEmpty()) return Collections.emptyList();
+        return List.of(sizes.split(","));
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setSizes(List<String> sizes) {
+        this.sizes = String.join(",", sizes);
     }
-
     public String getType() {
         return type;
     }
@@ -97,27 +101,37 @@ public class Products {
     public Products() {
     }
 
-    public Products(Integer id, String name, String description, Double price, Integer quantity, String size, String type, String imageUrl, Vendor vendor) {
+    public Products(Integer id, String name, String description, Double price, Integer quantity, List<String> sizes, String type,String brand, String imageUrl, Vendor vendor) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        this.size = size;
+        this.sizes = sizes.toString();
+        this.type = type;
+        this.brand=brand;
+        this.imageUrl = imageUrl;
+        this.vendor = vendor;
+    }
+
+    public Products(String name, String description, Double price, Integer quantity, List<String> sizes, String type, String imageUrl, Vendor vendor) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        System.out.println(sizes);
+        this.sizes = String.join(",", sizes);
         this.type = type;
         this.imageUrl = imageUrl;
         this.vendor = vendor;
     }
 
-    public Products(String name, String description, Double price, Integer quantity, String size, String type, String imageUrl, Vendor vendor) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.quantity = quantity;
-        this.size = size;
-        this.type = type;
-        this.imageUrl = imageUrl;
-        this.vendor = vendor;
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }
 

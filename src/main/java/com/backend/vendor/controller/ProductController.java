@@ -25,8 +25,10 @@ public class ProductController {
     @PostMapping("/addProduct")
     public ResponseEntity <?> add(@RequestBody Products products){
         try {
+
                 Products newProduct = productService.addProduct(products);
-                System.out.println(newProduct);
+                //System.out.println(products.getSizes().toString());
+                System.out.println(newProduct.getSizes());
                 return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
 
         } catch (Exception e) {
