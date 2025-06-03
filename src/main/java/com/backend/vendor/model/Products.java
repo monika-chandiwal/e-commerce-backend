@@ -27,7 +27,7 @@ public class Products {
     private String sizesJson;
 
     @Transient
-    private Map<String, String> sizes;
+    private Map<String, Integer> sizes;
 
     private String type;
     private String imageUrl;
@@ -53,11 +53,12 @@ public class Products {
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
 
-    public Map<String, String> getSizes() {
+    public Map<String, Integer> getSizes() {
         if (sizes == null && sizesJson != null) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                sizes = mapper.readValue(sizesJson, new TypeReference<Map<String, String>>() {});
+                sizes = mapper.readValue(sizesJson, new TypeReference<Map<String, Integer>>() {});
+                System.out.println(sizes);
             } catch (IOException e) {
                 e.printStackTrace();
                 sizes = new HashMap<>();
@@ -66,7 +67,7 @@ public class Products {
         return sizes != null ? sizes : Collections.emptyMap();
     }
 
-    public void setSizes(Map<String, String> sizes) {
+    public void setSizes(Map<String, Integer> sizes) {
         this.sizes = sizes;
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -92,7 +93,7 @@ public class Products {
     public Products() {}
 
     public Products(Integer id, String name, String description, Double price, Integer quantity,
-                    Map<String, String> sizes, String type, String brand, String imageUrl, Vendor vendor) {
+                    Map<String, Integer> sizes, String type, String brand, String imageUrl, Vendor vendor) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -106,7 +107,7 @@ public class Products {
     }
 
     public Products(String name, String description, Double price, Integer quantity,
-                    Map<String, String> sizes, String type, String imageUrl, Vendor vendor) {
+                    Map<String, Integer> sizes, String type, String imageUrl, Vendor vendor) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -118,7 +119,7 @@ public class Products {
     }
 
     public Products(String name, String description, Double price, Integer quantity,
-                    Map<String, String> sizes, String type, String imageUrl, String brand) {
+                    Map<String, Integer> sizes, String type, String imageUrl, String brand) {
         this.name = name;
         this.description = description;
         this.price = price;
