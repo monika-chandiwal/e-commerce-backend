@@ -45,7 +45,7 @@ public class ProductServiceImp implements ProductService{
 
     /**
      * @param id
-     * @param 
+     * @param
      * @return
      */
 
@@ -65,6 +65,14 @@ public class ProductServiceImp implements ProductService{
 
             productRepo.save(existingProduct);
         }
+
+    /**
+     * @return
+     */
+    @Override
+    public List<Products> getAllProducts() {
+        return productRepo.findAll();
+    }
 
 
 }

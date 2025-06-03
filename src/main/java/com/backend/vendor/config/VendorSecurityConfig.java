@@ -24,7 +24,7 @@ public class VendorSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/vendor/public/**", "/vendor/verifyOtp", "/vendor/otpRequest","/vendor/signup","/vendor/login","/vendor/logout","/vendor/addProduct","/vendor/dashboard/**","/vendor/dashboard/deleteProduct/*","/vendor/dashboard/deleteAllProduct","/vendor/dashboard/productUpdate/*").permitAll()
+                        .requestMatchers("/vendor/public/**", "/vendor/verifyOtp", "/vendor/otpRequest","/vendor/signup","/vendor/login","/vendor/logout","/vendor/addProduct","/vendor/dashboard/**","/vendor/dashboard/deleteProduct/*","/vendor/dashboard/deleteAllProduct","/vendor/dashboard/productUpdate/*","/vendor/showAllProductsToUsers").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(AbstractHttpConfigurer::disable)  // <-- DISABLE OAUTH2 LOGIN HERE

@@ -77,4 +77,15 @@ public class ProductController {
             throw new RuntimeException(e);
         }
     }
+    @GetMapping("/showAllProductsToUsers")
+    public ResponseEntity<?> showAll(){
+        try{
+           List<Products>all= productService.getAllProducts();
+            return all.isEmpty()
+                    ? ResponseEntity.status(HttpStatus.NOT_FOUND).body("No products found")
+                    : ResponseEntity.ok(all);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
